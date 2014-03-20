@@ -1,0 +1,17 @@
+#signin_img_container {
+/*  border: solid;*/
+  text-align: center;
+  background-image: url('https://s3.amazonaws.com/ooomf-com-files/Vhzrr0QLT5mSU0r4bKTp_DSC_0011.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  opacity: .9;
+  margin-top: 50px;
+}
+
+#signin_container {
+  /*border: solid;*/
+  margin: 50px;
+  /*background-color: rgba(255,255,255, .4);*/
+  color: white;
+}
