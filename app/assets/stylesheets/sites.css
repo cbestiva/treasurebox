@@ -1,17 +1,38 @@
-#signin_img_container {
-/*  border: solid;*/
+#signin_intro {
+  /*border: solid;*/
   text-align: center;
-  background-image: url('https://s3.amazonaws.com/ooomf-com-files/Vhzrr0QLT5mSU0r4bKTp_DSC_0011.jpg');
+}
+#signin_img_container {
+  border: solid white;
+  text-align: center;
+  background-image: url('http://666a658c624a3c03a6b2-25cda059d975d2f318c03e90bcf17c40.r92.cf1.rackcdn.com/unsplash_52580ca759efe_1.JPG');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 100%;
-  opacity: .9;
-  margin-top: 50px;
+  background-size: 120%;
+  opacity: 1;
+  margin-top: 10px;
 }
 
 #signin_container {
   /*border: solid;*/
   margin: 50px;
-  /*background-color: rgba(255,255,255, .4);*/
+  /*background-color: rgba(255,255,255, .5);*/
+  color: white;
+}
+
+#signup_img_container {
+  /*border: solid;*/
+  background-image: url('http://unsplash.s3.amazonaws.com/batch%209/bob-van-aubel-ray-bans.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 120%;
+  /*opacity: .7;*/
+  margin-top: 10px;
+}
+
+#signup_container {
+  /*border: solid;*/
+  text-align: center;
+  margin: 50px;
   color: white;
 }

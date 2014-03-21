@@ -1,9 +1,13 @@
 <div class="container">
+  <div class="row"></div>
+    <div class="col-md-2"></div>
+    <div class="col-xs-12 col-md-8" id="signin_intro"><h4>Have an item in good condition that may be worth someone else's money? Add it to TreasureBox.</h4></div>
+  </div>
   <div class="row">
     <div class="col-xs-6 col-md-2"></div>
     <div class="col-sx-6 col-md-8" id="signin_img_container">
       <div id="signin_container">
-        <h2>Sign in</h2>
+        <h4>Sign In</h4>
 
         <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
           <div><%= f.label :username %><br />
