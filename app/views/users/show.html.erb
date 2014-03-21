@@ -1,3 +1,56 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
-<%= @user.username %>
+<div class="container">
+  <h2>Welcome <%= @user.username %>!</h2><br>
+
+  <h4>Post an item for sale:</h4>
+  <form class="form-horizontal" role="form">
+    <!-- Field for Item Name -->
+    <div class="form-group">
+      <label for="item_name" class="col-sm-2 control-label">Item name:</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="item_name">
+      </div>
+    </div>
+    <!-- Dropdown for Category Selection -->    
+    <div class="form-group">
+      <label for="item_name" class="col-sm-2 control-label">Select Category:</label>
+      <div class="col-sm-4">
+        <div class="input-group">
+          <input type="text" id="activity_selector" class="form-control" placeholder="">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default dropdown-toggle btn-select" data-toggle="dropdown"><span class="caret"></span></button>
+              <ul class="dropdown-menu" id="selected_category">
+                <li><a href="#">Clothes</a></li>
+                <li><a href="#">Shoes</a></li>
+                <li><a href="#">Accessories</a></li>
+                <li><a href="#">Furniture</a></li>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Toys & Games</a></li>
+                <li><a href="#">Household Items</a></li>
+                <li><a href="#">Sporting Goods</a></li>
+                <li><a href="#">Antiques</a></li>
+                <li><a href="#">Other</a></li>
+              </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- Field for Description -->
+    <div class="form-group">
+      <label for="descritpion" class="col-sm-2 control-label">Description:</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="description">
+      </div>
+    </div>
+    <!-- Field for Photo Upload -->
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Photo:</label>
+    </div>
+    <!-- Field for Price -->
+    <div class="form-group">
+      <label for="price" class="col-sm-2 control-label">Price:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="price">
+      </div>
+    </div>
+  </form>
+</div>
