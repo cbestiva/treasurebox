@@ -1,3 +1,19 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+TreasureboxApp = angular.module("TreasureboxApp", [])
+
+@PostItemCtrl = ($scope) ->
+  # To select a category for a post item
+  $scope.selectedCategory = "Categories"
+  $scope.onCategoryClick = (event)->
+    $scope.selectedCategory = event
+
+  # Post = $resource("/post_items/:id", {id: "@id"}, {update: {method: "PUT"}})
+  # $scope.posts = Post.query()
+  # $scope.posts = [
+  #   {name: "Samsung TV", category: "Electronics", description: "46inch", price: 115.00}
+  #   {name: "Burton Snowboard", category: "Sporting Goods", description: "Women's size 147, rarely used", price: 96.00}
+  # ]
+
+  $scope.addPost = ->
+    post = Post.save($scope.newPost)
+    $scope.posts.push(post)
+    $scope.newPost = {}

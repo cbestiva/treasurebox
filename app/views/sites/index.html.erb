@@ -1,2 +1,14 @@
-<h1>Home Page</h1>
-<p>Will display all posts/items here...</p>
+<div class="container">
+  <h1>Home Page</h1>
+  <p>Will display all posts/items here...</p>
+
+  <div ng-controller="PostItemCtrl">
+    <div ng-repeat="newPost in posts">
+      {{newPost.name}}
+      {{newPost.category}}
+      {{newPost.description}}
+      {{newPost.price}}
+    </div>
+  </div>
+
+</div>

@@ -2,60 +2,70 @@
   <h2>Welcome <%= @user.username %>!</h2><br>
 
   <h4>Post an item for sale:</h4>
-  <form class="form-horizontal" role="form">
-    <!-- Field for Item Name -->
-    <div class="form-group">
-      <label for="item_name" class="col-sm-2 control-label">Item name:</label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control" id="item_name">
-      </div>
-    </div>
-    <!-- Dropdown for Category Selection -->    
-    <div class="form-group">
-      <label for="item_name" class="col-sm-2 control-label">Select Category:</label>
-      <div class="col-sm-4">
-        <div class="input-group">
-          <input type="text" id="activity_selector" class="form-control" placeholder="">
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-default dropdown-toggle btn-select" data-toggle="dropdown"><span class="caret"></span></button>
-              <ul class="dropdown-menu" id="selected_category">
-                <li><a href="#">Clothes</a></li>
-                <li><a href="#">Shoes</a></li>
-                <li><a href="#">Accessories</a></li>
-                <li><a href="#">Furniture</a></li>
-                <li><a href="#">Electronics</a></li>
-                <li><a href="#">Toys & Games</a></li>
-                <li><a href="#">Household Items</a></li>
-                <li><a href="#">Sporting Goods</a></li>
-                <li><a href="#">Antiques</a></li>
-                <li><a href="#">Other</a></li>
-              </ul>
-            </div>
+  <div ng-controller="PostItemCtrl">
+    <form class="form-horizontal" role="form" ng-submit="addPost()">
+      <!-- Field for Item Name -->
+      <div class="form-group">
+        <label for="item_name" class="col-sm-2 control-label">Item name:</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="item_name" ng-model="newPost.name">
         </div>
       </div>
-    </div>
-    <!-- Field for Description -->
-    <div class="form-group">
-      <label for="descritpion" class="col-sm-2 control-label">Description:</label>
-      <div class="col-sm-4">
-        <textarea class="form-control" rows="3"></textarea>
+      <!-- Dropdown for Category Selection -->    
+      <div class="form-group">
+        <label for="item_name" class="col-sm-2 control-label">Select Category:</label>
+        <div class="col-sm-6 dropdown btn">
+          <div id="selection_dropdown" id="dLabel" role="button" class="col-sm-5 btn btn-default dropdown-toggle btn-select" data-toggle="dropdown" data-target="#">
+            <span>{{selectedCategory}}</span>
+            <b class="caret"></b>
+          </div>
+          <ul class="dropdown-menu" role="menu" id="selected_category" aria-labelledby="dLabel">
+            <li ng-click="onCategoryClick('Clothes')">Clothes</li>
+            <li ng-click="onCategoryClick('Shoes')">Shoes</li>
+            <li ng-click="onCategoryClick('Accessories')">Accessories</li>
+            <li ng-click="onCategoryClick('Furniture')">Furniture</li>
+            <li ng-click="onCategoryClick('Electronics')">Electronics</li>
+            <li ng-click="onCategoryClick('Toys & Games')">Toys & Games</li>
+            <li ng-click="onCategoryClick('Household Items')">Household Items</li>
+            <li ng-click="onCategoryClick('Sporting Goods')">Sporting Goods</li>
+            <li ng-click="onCategoryClick('Antiques')">Antiques</li>
+            <li ng-click="onCategoryClick('Other')">Other</li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <!-- Field for Photo Upload -->
-    <div class="form-group">
-      <!-- <label class="col-sm-2 control-label">Price:</label> -->
-      <input type="file" class="col-md-3 col-md-offset-2 " id="img">
-    </div>
-    <!-- Field for Price -->
-    <div class="form-group">
-      <label for="price" class="col-sm-2 control-label">Price:</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="price">
+      <!-- Field for Description -->
+      <div class="form-group">
+        <label for="descritpion" class="col-sm-2 control-label">Description:</label>
+        <div class="col-sm-4">
+          <textarea class="form-control" rows="3" ng-model="newPost.description"></textarea>
+        </div>
       </div>
-    </div>
-  </form>
+      <!-- Field for Photo Upload -->
+      <div class="form-group">
+        <!-- <label class="col-sm-2 control-label">Price:</label> -->
+        <input type="file" class="col-md-3 col-md-offset-2 " id="img" ng-model="newPost.image">
+      </div>
+      <!-- Field for Price -->
+      <div class="form-group">
+        <label for="price" class="col-sm-2 control-label">Price:</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="price" ng-model="newPost.price">
+        </div>
+      </div>
+      <!-- Add Item button -->
+      <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-2">
+          <input class="btn btn-primary btn-md col-sm-3" type="submit" value="Add Item">
+        </div>
+      </div>
+    </form>
 
-  <!-- <div ng-repeat="post in posts"> -->
+  <div ng-repeat="newPost in posts">
+    {{newPost.name}}
+    {{newPost.category}}
+    {{newPost.description}}
+    {{newPost.price}}
+  </div>
 
-  <!-- </div> -->
+  </div>
 </div>
