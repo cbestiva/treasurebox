@@ -16,7 +16,7 @@
         <label for="item_name" class="col-sm-2 control-label">Select Category:</label>
         <div class="col-sm-6 dropdown btn">
           <div id="selection_dropdown" id="dLabel" role="button" class="col-sm-5 btn btn-default dropdown-toggle btn-select" data-toggle="dropdown" data-target="#">
-            <span>{{selectedCategory}}</span>
+            <span ng-model="newPost.category">{{selectedCategory}}</span>
             <b class="caret"></b>
           </div>
           <ul class="dropdown-menu" role="menu" id="selected_category" aria-labelledby="dLabel">
@@ -60,11 +60,11 @@
       </div>
     </form>
 
-  <div ng-repeat="newPost in posts">
-    {{newPost.name}}
-    {{newPost.category}}
-    {{newPost.description}}
-    {{newPost.price}}
+  <div ng-repeat="post in posts">
+    {{post.name}}
+    {{post.category}}
+    {{post.description}}
+    {{post.price}}
   </div>
 
   </div>
