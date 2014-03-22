@@ -3,7 +3,7 @@ class PostItemsController < ApplicationController
     posts = PostItem.all 
 
     respond_to do |f|
-      f.html {redirect_to root}
+      f.html {redirect_to root_path}
       f.json {render :json => posts}
     end
   end
