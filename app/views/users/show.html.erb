@@ -2,8 +2,15 @@
   <h2>Welcome <%= @user.username %>!</h2><br>
 
   <h4>Post an item for sale:</h4>
-  <div ng-controller="PostItemCtrl">
+  <div ng-controller="UserPostsCtrl">
     <form class="form-horizontal" role="form" ng-submit="addPost()">
+      <!-- Field for Item City -->
+      <div class="form-group">
+        <label for="item_name" class="col-sm-2 control-label">City:</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control ff_elem" id="f_elem_city" name="ff_nm_form[]" ng-click"onCityClick('city')" ng-model="newPost.city">
+        </div>
+      </div>
       <!-- Field for Item Name -->
       <div class="form-group">
         <label for="item_name" class="col-sm-2 control-label">Item name:</label>
@@ -61,6 +68,7 @@
     </form>
 
   <div ng-repeat="post in posts">
+    {{post.city}}
     {{post.name}}
     {{post.category}}
     {{post.description}}
