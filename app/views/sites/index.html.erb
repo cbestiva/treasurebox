@@ -1,14 +1,14 @@
 <div class="container">
+  <form action="" method="post" onsubmit="return false;" role="form">
+    <p>Select your city: <input class="ff_elem" type="text" name="ff_nm_from[]" value="" id="f_elem_city"/></p>
+  </form>
+
   <h1>Home Page</h1>
   <p>Will display all posts/items here...</p>
 
-  <div ng-controller="PostItemCtrl">
-    <div ng-repeat="newPost in posts">
-      {{newPost.name}}
-      {{newPost.category}}
-      {{newPost.description}}
-      {{newPost.price}}
-    </div>
-  </div>
+
+  <ng-view>
+    <!-- where posts will be displayed -->
+  </ng-view>
 
 </div>
