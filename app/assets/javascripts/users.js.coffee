@@ -50,9 +50,6 @@ PostCtrls.controller("PostsCtrl", ["$scope", "$http", "limitToFilter",
         success((response) ->
           return limitToFilter(response.data, 15)
         )
-
-
-
 ])
 
 ######################################################################################################### 
