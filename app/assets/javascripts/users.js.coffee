@@ -70,6 +70,8 @@ UserPostCtrls = angular.module("UserPostCtrls", [])
 
 UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "Post", "limitToFilter"
   ($scope, $routeParams, $http, Post, limitToFilter) ->
+    console.log "Loaded UserPostCtrl"
+    $scope.hello = "whoot"
     $scope.userId = $routeParams.id
     $http.get("/users/show/" + $scope.userId + ".json").
       success((data) ->
@@ -90,7 +92,7 @@ UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "P
     # Set it to the value of the selectedCategory
     # And assign it to the newPost category attribute
     $scope.onCategoryClick = (category)->
-      console.log $routeParams
+      # console.log $routeParams
       $scope.selectedCategory = category
       $scope.newPost.category = $scope.selectedCategory
 
@@ -107,10 +109,14 @@ UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "P
       $scope.selectedCategory = "Categories"
 
     $scope.editPost = () ->
-      console.log(@post)
+      # console.log(@post, @$index)
       Post.update(@post)
 
     $scope.deletePost = () ->
-      Post.delete(@post)
+      Post.delete(@post, ()->
+        $scope.userPosts.splice(@index,1)
+      )
+
+
 ])
 
