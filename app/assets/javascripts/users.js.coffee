@@ -2,7 +2,8 @@ TreasureboxApp = angular.module("TreasureboxApp", [
   "TreasureboxRouter",
   "PostCtrls",
   "UserPostCtrls",
-  "PostsService"
+  "PostsService",
+  "ui.bootstrap"
 ])
 
 TreasureboxApp.config(["$httpProvider",
@@ -36,34 +37,49 @@ TreasureboxRouter.config(["$routeProvider", "$locationProvider",
 
 ])
 
-PostCtrls = angular.module("PostCtrls", ["ui.bootstrap"])
+PostCtrls = angular.module("PostCtrls", [])
 
-PostCtrls.controller("PostsCtrl", ["$scope", "$http", "limitToFilter",
+# TypeaheadCtrl = ($scope, $http, limitToFilter) ->
+  
+#   #http://www.geobytes.com/free-ajax-cities-jsonp-api.htm
+#   $scope.cities = (cityName) ->
+#     $http.jsonp("http://gd.geobytes.com/AutoCompleteCity?callback=JSON_CALLBACK &filter=US&q=" + cityName).then (response) ->
+#       limitToFilter response.data, 15
+
+# PostCtrls.controller 'TypeaheadCtrl', TypeaheadCtrl
+
+PostCtrls.controller("PostsCtrl", ["$scope", "$http", "limitToFilter"
   ($scope, $http, limitToFilter) ->
+    
     $http.get("/posts.json").
       success((data) ->
         console.log(data)
         $scope.posts = data
-      )
+    )
+
     $scope.cities = (cityName) ->
-      return $http.jsonp("http://gd.geobytes.com/AutoCompleteCity?callback=JSON_CALLBACK &filter=US&q="+cityName).
-        success((response) ->
-          return limitToFilter(response.data, 15)
-        )
+      $http.jsonp("http://gd.geobytes.com/AutoCompleteCity?callback=JSON_CALLBACK &filter=US&q="+cityName).then (response) ->
+          limitToFilter response.data, 15
+        
+
 ])
 
 ######################################################################################################### 
 
 UserPostCtrls = angular.module("UserPostCtrls", [])
 
-UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "Post",
-  ($scope, $routeParams, $http, Post) ->
+UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "Post", "limitToFilter"
+  ($scope, $routeParams, $http, Post, limitToFilter) ->
     $scope.userId = $routeParams.id
     $http.get("/users/show/" + $scope.userId + ".json").
       success((data) ->
         $scope.user = data
         $scope.userPosts = data.posts
       )
+
+    $scope.cities = (cityName) ->
+      $http.jsonp("http://gd.geobytes.com/AutoCompleteCity?callback=JSON_CALLBACK &filter=US&q="+cityName).then (response) ->
+          limitToFilter response.data, 15
 
     $scope.onCityClick = (city) ->
       $scope.selectedCity = city

@@ -3,13 +3,13 @@
 
   <h4>Post an item for sale:</h4>
   <div ng-controller="UserPostsCtrl">
-    
+
     <form class="form-horizontal" role="form" ng-submit="addPost()">
       <!-- Field for Item City -->
       <div class="form-group">
         <label for="item_name" class="col-sm-2 control-label">City:</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control ff_elem" id="f_elem_city" name="ff_nm_form[]" ng-click"onCityClick('city')" ng-model="newPost.city">
+          <input type="text" class="form-control" typeahead="suggestion for suggestion in cities($viewValue)" ng-click"onCityClick('city')" ng-model="newPost.city">
         </div>
       </div>
       <!-- Field for Item Name -->
@@ -48,10 +48,10 @@
           <textarea class="form-control" rows="3" ng-model="newPost.description"></textarea>
         </div>
       </div>
-      <!-- Field for Photo Upload -->
+      <!-- Field for Image Upload -->
       <div class="form-group">
         <!-- <label class="col-sm-2 control-label">Price:</label> -->
-        <input type="file" class="col-md-3 col-md-offset-2 " id="img" ng-model="newPost.image">
+        <input type="file" class="col-md-3 col-md-offset-2 " id="image" ng-model="newPost.image">
       </div>
       <!-- Field for Price -->
       <div class="form-group">
@@ -72,6 +72,7 @@
   <div ng-repeat="post in userPosts">
     <div id="user_posts">
       <span ng-hide="editing">
+        <img src="{{post.image}}_url.to_s"><br>
         {{post.city}}<br>
         {{post.name}}<br>
         {{post.category}}<br>
@@ -128,7 +129,7 @@
       <!-- Field for Photo Upload -->
       <div class="form-group">
         <!-- <label class="col-sm-2 control-label">Price:</label> -->
-        <input type="file" class="col-md-3 col-md-offset-2 " id="img" ng-model="post.image">
+        <input type="file" class="col-md-3 col-md-offset-2 " id="image" ng-model="post.image">
       </div>
       <!-- Field for Price -->
       <div class="form-group">
