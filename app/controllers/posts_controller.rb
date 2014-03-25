@@ -43,5 +43,10 @@ class PostsController < ApplicationController
   def destroy
     post = Post.find(params[:id])
     post.delete
+
+    respond_to do |f|
+      f.html {redirect_to profile_path(current_user)}
+      f.json {render json: post, status: 200}
+    end
   end
 end

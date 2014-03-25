@@ -13,7 +13,7 @@ TreasureboxApp.config(["$httpProvider",
 
 PostsService = angular.module("PostsService", ["ngResource"])
 
-PostsService.factory("PostRes", ["$resource",
+PostsService.factory("Post", ["$resource",
   ($resource) ->
     $resource("/posts/:id.json", {id: "@id"}, {update: {method: "PUT"}})
 ])
@@ -59,8 +59,8 @@ PostCtrls.controller("PostsCtrl", ["$scope", "$http", "limitToFilter",
 
 UserPostCtrls = angular.module("UserPostCtrls", [])
 
-UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "PostRes",
-  ($scope, $routeParams, $http, PostRes) ->
+UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "Post",
+  ($scope, $routeParams, $http, Post) ->
     $scope.userId = $routeParams.id
     $http.get("/users/show/" + $scope.userId + ".json").
       success((data) ->
@@ -87,7 +87,7 @@ UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "P
     # ]
 
     $scope.addPost = () ->
-      post = PostRes.save($scope.newPost)
+      post = Post.save($scope.newPost)
       $scope.userPosts.push(post)
       # $scope.posts.push($scope.newPost)
       $scope.newPost = {}
@@ -95,7 +95,9 @@ UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "P
 
     $scope.editPost = () ->
       console.log(@post)
-      PostRes.update(@post)
-      
+      Post.update(@post)
+
+    $scope.deletePost = () ->
+      Post.delete(@post)
 ])
 

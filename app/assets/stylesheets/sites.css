@@ -1,11 +1,13 @@
 /* Styling for site's index page */
 #index_posts {
   border: solid;
+  margin: 20px;
 }
 
 /* Styling for user's show page */
 #user_posts {
   border: solid;
+  margin: 20px;
 }
 
 /* Styling for singin and signup pages */

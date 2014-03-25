@@ -3,6 +3,7 @@
 
   <h4>Post an item for sale:</h4>
   <div ng-controller="UserPostsCtrl">
+    
     <form class="form-horizontal" role="form" ng-submit="addPost()">
       <!-- Field for Item City -->
       <div class="form-group">
@@ -77,6 +78,7 @@
         {{post.description}}<br>
         {{post.price}}<br>
         <button type="button" class="btn btn-info btn-xs" ng-click="editing = true">Edit Post</button>
+        <button type="button" class="btn btn-danger btn-xs" ng-click="deletePost()">Delete Post</button>
       </span>
       <form ng-show="editing" ng-submit="editing = false" class="form-horizontal" role="form">
       <h4>Edit Form:</h4>
@@ -138,17 +140,10 @@
       <!-- Add Item button -->
       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-2">
-          <input class="btn btn-primary btn-md col-sm-3" type="submit" value="Edit Item" ng-click="editPost()">
+          <input class="btn btn-primary btn-md col-sm-3" type="submit" value="Save" ng-click="editPost()">
         </div>
       </div>
       </form>
-<!--       {{post.city}}<br>
-      {{post.name}}<br>
-      {{post.category}}<br>
-      {{post.description}}<br>
-      {{post.price}}<br> -->
-      <!-- <a href="/posts/{{post.id}}">Update post</a> -->
-
     </div>
   </div>
 
