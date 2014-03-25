@@ -1,0 +1,156 @@
+<div class="container">
+  <h2>Welcome <%= current_user.username %>!</h2><br>
+
+  <h4>Post an item for sale:</h4>
+  <div ng-controller="UserPostsCtrl">
+    <form class="form-horizontal" role="form" ng-submit="addPost()">
+      <!-- Field for Item City -->
+      <div class="form-group">
+        <label for="item_name" class="col-sm-2 control-label">City:</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control ff_elem" id="f_elem_city" name="ff_nm_form[]" ng-click"onCityClick('city')" ng-model="newPost.city">
+        </div>
+      </div>
+      <!-- Field for Item Name -->
+      <div class="form-group">
+        <label for="item_name" class="col-sm-2 control-label">Item name:</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="item_name" ng-model="newPost.name">
+        </div>
+      </div>
+      <!-- Dropdown for Category Selection -->    
+      <div class="form-group">
+        <label for="item_name" class="col-sm-2 control-label">Select Category:</label>
+        <div class="col-sm-6 dropdown btn">
+          <div id="selection_dropdown" id="dLabel" role="button" class="col-sm-5 btn btn-default dropdown-toggle btn-select" data-toggle="dropdown" data-target="#">
+            <span ng-model="newPost.category">{{selectedCategory}}</span>
+            <b class="caret"></b>
+          </div>
+          <ul class="dropdown-menu" role="menu" id="selected_category" aria-labelledby="dLabel">
+            <li ng-click="onCategoryClick('Clothes')">Clothes</li>
+            <li ng-click="onCategoryClick('Shoes')">Shoes</li>
+            <li ng-click="onCategoryClick('Accessories')">Accessories</li>
+            <li ng-click="onCategoryClick('Furniture')">Furniture</li>
+            <li ng-click="onCategoryClick('Electronics')">Electronics</li>
+            <li ng-click="onCategoryClick('Toys & Games')">Toys & Games</li>
+            <li ng-click="onCategoryClick('Household Items')">Household Items</li>
+            <li ng-click="onCategoryClick('Sporting Goods')">Sporting Goods</li>
+            <li ng-click="onCategoryClick('Antiques')">Antiques</li>
+            <li ng-click="onCategoryClick('Other')">Other</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Field for Description -->
+      <div class="form-group">
+        <label for="descritpion" class="col-sm-2 control-label">Description:</label>
+        <div class="col-sm-4">
+          <textarea class="form-control" rows="3" ng-model="newPost.description"></textarea>
+        </div>
+      </div>
+      <!-- Field for Photo Upload -->
+      <div class="form-group">
+        <!-- <label class="col-sm-2 control-label">Price:</label> -->
+        <input type="file" class="col-md-3 col-md-offset-2 " id="img" ng-model="newPost.image">
+      </div>
+      <!-- Field for Price -->
+      <div class="form-group">
+        <label for="price" class="col-sm-2 control-label">Price:</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="price" ng-model="newPost.price">
+        </div>
+      </div>
+      <!-- Add Item button -->
+      <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-2">
+          <input class="btn btn-primary btn-md col-sm-3" type="submit" value="Add Item">
+        </div>
+      </div>
+    </form>
+
+
+  <div ng-repeat="post in userPosts">
+    <div id="user_posts">
+      <span ng-hide="editing">
+        {{post.city}}<br>
+        {{post.name}}<br>
+        {{post.category}}<br>
+        {{post.description}}<br>
+        {{post.price}}<br>
+        <button type="button" class="btn btn-info btn-xs" ng-click="editing = true">Edit Post</button>
+      </span>
+      <form ng-show="editing" ng-submit="editing = false" class="form-horizontal" role="form">
+      <h4>Edit Form:</h4>
+        <!-- Field for Item City -->
+      <div class="form-group">
+        <label for="item_name" class="col-sm-2 control-label">City:</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control ff_elem" id="f_elem_city" name="ff_nm_form[]" ng-click"onCityClick('city')" ng-model="post.city">
+        </div>
+      </div>
+      <!-- Field for Item Name -->
+      <div class="form-group">
+        <label for="item_name" class="col-sm-2 control-label">Item name:</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="item_name" ng-model="post.name">
+        </div>
+      </div>
+      <!-- Dropdown for Category Selection -->    
+      <div class="form-group">
+        <label for="item_name" class="col-sm-2 control-label">Select Category:</label>
+        <div class="col-sm-6 dropdown btn">
+          <div id="selection_dropdown" id="dLabel" role="button" class="col-sm-5 btn btn-default dropdown-toggle btn-select" data-toggle="dropdown" data-target="#">
+            <span ng-model="post.category">{{selectedCategory}}</span>
+            <b class="caret"></b>
+          </div>
+          <ul class="dropdown-menu" role="menu" id="selected_category" aria-labelledby="dLabel">
+            <li ng-click="onCategoryClick('Clothes')">Clothes</li>
+            <li ng-click="onCategoryClick('Shoes')">Shoes</li>
+            <li ng-click="onCategoryClick('Accessories')">Accessories</li>
+            <li ng-click="onCategoryClick('Furniture')">Furniture</li>
+            <li ng-click="onCategoryClick('Electronics')">Electronics</li>
+            <li ng-click="onCategoryClick('Toys & Games')">Toys & Games</li>
+            <li ng-click="onCategoryClick('Household Items')">Household Items</li>
+            <li ng-click="onCategoryClick('Sporting Goods')">Sporting Goods</li>
+            <li ng-click="onCategoryClick('Antiques')">Antiques</li>
+            <li ng-click="onCategoryClick('Other')">Other</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Field for Description -->
+      <div class="form-group">
+        <label for="descritpion" class="col-sm-2 control-label">Description:</label>
+        <div class="col-sm-4">
+          <textarea class="form-control" rows="3" ng-model="post.description"></textarea>
+        </div>
+      </div>
+      <!-- Field for Photo Upload -->
+      <div class="form-group">
+        <!-- <label class="col-sm-2 control-label">Price:</label> -->
+        <input type="file" class="col-md-3 col-md-offset-2 " id="img" ng-model="post.image">
+      </div>
+      <!-- Field for Price -->
+      <div class="form-group">
+        <label for="price" class="col-sm-2 control-label">Price:</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="price" ng-model="post.price">
+        </div>
+      </div>
+      <!-- Add Item button -->
+      <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-2">
+          <input class="btn btn-primary btn-md col-sm-3" type="submit" value="Edit Item" ng-click="editPost('post')">
+        </div>
+      </div>
+      </form>
+<!--       {{post.city}}<br>
+      {{post.name}}<br>
+      {{post.category}}<br>
+      {{post.description}}<br>
+      {{post.price}}<br> -->
+      <!-- <a href="/posts/{{post.id}}">Update post</a> -->
+
+    </div>
+  </div>
+
+  </div>
+</div>

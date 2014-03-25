@@ -1,3 +1,14 @@
+/* Styling for site's index page */
+#index_posts {
+  border: solid;
+}
+
+/* Styling for user's show page */
+#user_posts {
+  border: solid;
+}
+
+/* Styling for singin and signup pages */
 #signin_intro {
   /*border: solid;*/
   text-align: center;

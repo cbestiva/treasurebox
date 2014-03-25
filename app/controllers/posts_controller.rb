@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_filter :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
 
   def index
     @posts = Post.all
@@ -10,19 +11,22 @@ class PostsController < ApplicationController
   end
 
   def show
-    post = Post.find(params[:id])
+    # @posts = Post.where(:user_id => current_user.id)
+    @posts = current_user.posts
 
     respond_to do |f|
-      f.json {render json: post}
+      f.html {render layout: false}
+      f.json {render json: @posts}
     end
   end
 
   def create
-    post = Post.create(params[:post])
+    new_post = params.require(:post).permit(:city, :name, :category, :description, :price)
+    @post = current_user.posts.create(new_post)
 
     respond_to do |f|
       f.html {redirect_to profile_path(current_user)}
-      f.json {render json: post}
+      f.json {render json: @post}
     end
   end
 
