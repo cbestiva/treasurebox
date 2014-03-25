@@ -32,8 +32,12 @@ class PostsController < ApplicationController
 
   def update
     post = Post.find(params[:id])
-    post.update_attributes(params[:post])
-    redirect_to profile_path(current_user)
+    post.update_attributes(params[:post].permit(:name,:category, :description,:price))
+
+    respond_to do |f|
+      f.html {redirect_to profile_path(current_user)}
+      f.json {render json: post, status: 200}
+    end
   end
 
   def destroy

@@ -15,7 +15,7 @@ PostsService = angular.module("PostsService", ["ngResource"])
 
 PostsService.factory("PostRes", ["$resource",
   ($resource) ->
-    $resource("/posts/:id.json", {id: @id}, {'update': {method: 'PUT'}})
+    $resource("/posts/:id.json", {id: "@id"}, {update: {method: "PUT"}})
 ])
 
 ########################################################################################################
@@ -94,7 +94,8 @@ UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "P
       $scope.selectedCategory = "Categories"
 
     $scope.editPost = () ->
-      updatedPost = PostRes.update($scope.post)
-      console.log($scope.post)
+      console.log(@post)
+      PostRes.update(@post)
+      
 ])
 
