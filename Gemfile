@@ -10,7 +10,8 @@ gem 'pg'
 gem 'sass-rails', '~> 4.0.2'
 
 gem 'devise'
-gem 'carrierwave'
+gem 'aws-sdk'
+# gem 'carrierwave'
 gem 'json'
 gem 'typhoeus'
 
