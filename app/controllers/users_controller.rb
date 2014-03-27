@@ -12,11 +12,12 @@ class UsersController < ApplicationController
   end
 
   def new
-    render "/layouts/application"
   end
 
   def new_form
     @user = User.new
     render layout: false 
   end
+
+
 end
