@@ -10,4 +10,13 @@ class UsersController < ApplicationController
       f.json {render json: @user.as_json(include: :posts)}
     end
   end
+
+  def new
+    render "/layouts/application"
+  end
+
+  def new_form
+    @user = User.new
+    render layout: false 
+  end
 end

@@ -1,4 +1,7 @@
 TreasureboxApp::Application.routes.draw do
+ 
+  get "/users/new_form", to: "users#new_form"
+  resources :users
   resources :posts
   devise_for :users
   

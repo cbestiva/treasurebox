@@ -2,9 +2,16 @@
   <h2>Welcome <%= current_user.username %>!</h2><br>
 
   <h4>Post an item for sale:</h4>
-  <div ng-controller="UserPostsCtrl">
+  <div ng-controller="UserPostsCtrl" flow-init>
 
-    <form class="form-horizontal" role="form" ng-submit="addPost()">
+    <form class="form-horizontal" role="form" ng-submit="addPost()" enctype="multipart/form-data" action="https://treasurebox-photos.s3.amasonaws.com/" method="post">
+      <input type="hidden" name="key" value="uploads/${filename}">
+      <input type="hidden" name="AKIAJJBO6MLEYMSHLGIA" value="+cudz/G7A0JofHYSr3Ma0MqTHvqFBRyKGFsRz8VI"> 
+      <input type="hidden" name="acl" value="private"> 
+      <input type="hidden" name="success_action_redirect" value="http://localhost:3000/users/show/:id">
+      <input type="hidden" name="policy" value="YOUR_POLICY_DOCUMENT_BASE64_ENCODED">
+      <input type="hidden" name="signature" value="YOUR_CALCULATED_SIGNATURE">
+      <input type="hidden" name="Content-Type" value="image/jpeg">
       <!-- Field for Item City -->
       <div class="form-group">
         <label for="item_name" class="col-sm-2 control-label">City:</label>
@@ -48,11 +55,6 @@
           <textarea class="form-control" rows="3" ng-model="newPost.description"></textarea>
         </div>
       </div>
-      <!-- Field for Image Upload -->
-      <div class="form-group">
-        <!-- <label class="col-sm-2 control-label">Price:</label> -->
-        <input type="file" class="col-md-3 col-md-offset-2 " id="image" ng-model="newPost.image">
-      </div>
       <!-- Field for Price -->
       <div class="form-group">
         <label for="price" class="col-sm-2 control-label">Price:</label>
@@ -60,10 +62,23 @@
           <input type="text" class="form-control" id="price" ng-model="newPost.price">
         </div>
       </div>
+      <!-- Field for Image Upload -->
+      <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-2">
+        <div class="thumbnail" ng-hide="$flow.files.length">
+          <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=no+image">
+        </div>
+        <div class="thumbnail" ng-show="$flow.files.length">
+          <img flow-img="$flow.files[0]" />
+        </div>
+          <input type="file" flow-btn ng-hide="$flow.files.length">
+          <a href="#" class="btn btn-danger btn-sm" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</a>
+        </div> 
+      </div>
       <!-- Add Item button -->
       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-2">
-          <input class="btn btn-primary btn-md col-sm-3" type="submit" value="Add Item">
+          <input class="btn btn-primary btn-md col-sm-3" type="submit" value="Add Item" ng-click="uploadFile()">
         </div>
       </div>
     </form>
@@ -72,12 +87,11 @@
   <div ng-repeat="post in userPosts">
     <div id="user_posts">
       <span ng-hide="editing">
-        <img src="{{post.image}}_url.to_s"><br>
-        {{post.city}}<br>
-        {{post.name}}<br>
-        {{post.category}}<br>
-        {{post.description}}<br>
-        {{post.price}}<br>
+        <label>City:</label> {{post.city}}<br>
+        <label>Name: </label> {{post.name}}<br>
+        <label>Category:</label> {{post.category}}<br>
+        <label>Description:</label> {{post.description}}<br>
+        <label>Price:</label> {{post.price}}<br>
         <button type="button" class="btn btn-info btn-xs" ng-click="editing = true">Edit Post</button>
         <button type="button" class="btn btn-danger btn-xs" ng-click="deletePost()">Delete Post</button>
       </span>
@@ -126,17 +140,17 @@
           <textarea class="form-control" rows="3" ng-model="post.description"></textarea>
         </div>
       </div>
-      <!-- Field for Photo Upload -->
-      <div class="form-group">
-        <!-- <label class="col-sm-2 control-label">Price:</label> -->
-        <input type="file" class="col-md-3 col-md-offset-2 " id="image" ng-model="post.image">
-      </div>
       <!-- Field for Price -->
       <div class="form-group">
         <label for="price" class="col-sm-2 control-label">Price:</label>
         <div class="col-sm-2">
           <input type="text" class="form-control" id="price" ng-model="post.price">
         </div>
+      </div>
+      <!-- Field for Photo Upload -->
+      <div class="form-group">
+        <!-- <label class="col-sm-2 control-label">Price:</label> -->
+        <input type="file" class="col-md-3 col-md-offset-2 " id="image" ng-model="post.image">
       </div>
       <!-- Add Item button -->
       <div class="form-group">

@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_filter :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_filter :authenticate_user!, only: [:create, :edit, :update, :destroy]
 
   def index
     @posts = Post.all
@@ -21,7 +21,8 @@ class PostsController < ApplicationController
   end
 
   def create
-    new_post = params.require(:post).permit(:city, :name, :category, :description, :price)
+    # binding.pry
+    new_post = params.require(:post).permit(:city, :name, :category, :description, :price, :image)
     @post = current_user.posts.create(new_post)
 
     respond_to do |f|
@@ -40,6 +41,18 @@ class PostsController < ApplicationController
     end
   end
 
+  def render_new_photo
+    respond_to do |f|
+      f.json {
+        render json: {
+          policy: s3_upload_policy_document,
+          signature: s3_upload_signature,
+          key: key
+        }.to_json
+      }
+    end
+  end
+
   def destroy
     post = Post.find(params[:id])
     post.delete
@@ -49,4 +62,25 @@ class PostsController < ApplicationController
       f.json {render json: post, status: 200}
     end
   end
+
+  protected
+
+  def s3_upload_policy_document
+    return @policy if @policy
+    ret = {"expiration" => "5.minutes.from_now.xmlschema",
+      "conditions" => [
+        {"bucket" => 'treasurebox-photos'},
+        ["starts-with", "$key", @post],
+        {"acl" => "private"},
+        {"success_action_status" => "200"},
+        ["content-length-range", 0, 1048576]
+      ]
+    }
+    @policy = Base64.encode64(ret.to_json).gsub(/\n/,'')
+  end
+
+  def s3_upload_signature
+    signature = Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'), +cudz/G7A0JofHYSr3Ma0MqTHvqFBRyKGFsRz8VI, s3_upload_policy_document)).gsub("\n","")
+  end
+
 end

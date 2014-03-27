@@ -3,7 +3,19 @@ TreasureboxApp = angular.module("TreasureboxApp", [
   "PostCtrls",
   "UserPostCtrls",
   "PostsService",
-  "ui.bootstrap"
+  "ui.bootstrap",
+  "flow"
+]).config(["flowFactoryProvider",
+  (flowFactoryProvider) ->
+    flowFactoryProvider.defaults = {
+      target: "/posts",
+      permanentErrors: [404, 500, 501]
+    }
+    flowFactoryProvider.on("catchAll", 
+      (event) ->
+        console.log("catchAll")
+    )
+
 ])
 
 TreasureboxApp.config(["$httpProvider",
@@ -23,7 +35,7 @@ PostsService.factory("Post", ["$resource",
 
 TreasureboxRouter = angular.module("TreasureboxRouter", ["ngRoute"])
 
-TreasureboxRouter.config(["$routeProvider", "$locationProvider",
+TreasureboxRouter.config(["$routeProvider", "$locationProvider"
   ($routeProvider, $locationProvider) ->
     $routeProvider.when("/"
       templateUrl: "/posts"
@@ -31,6 +43,8 @@ TreasureboxRouter.config(["$routeProvider", "$locationProvider",
     ).when("/users/show/:id"
       templateUrl: "/posts/show"
       controller: "UserPostsCtrl"
+    ).when("/users/new",
+      templateUrl: "/users/new_form"
     )
 
     $locationProvider.html5Mode(true);
@@ -71,13 +85,13 @@ UserPostCtrls = angular.module("UserPostCtrls", [])
 UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "Post", "limitToFilter"
   ($scope, $routeParams, $http, Post, limitToFilter) ->
     console.log "Loaded UserPostCtrl"
-    $scope.hello = "whoot"
     $scope.userId = $routeParams.id
     $http.get("/users/show/" + $scope.userId + ".json").
       success((data) ->
         $scope.user = data
         $scope.userPosts = data.posts
       )
+
 
     $scope.cities = (cityName) ->
       $http.jsonp("http://gd.geobytes.com/AutoCompleteCity?callback=JSON_CALLBACK &filter=US&q="+cityName).then (response) ->

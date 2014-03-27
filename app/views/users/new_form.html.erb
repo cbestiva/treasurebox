@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row"></div>
+    <div class="col-md-2"></div>
+    <div class="col-xs-12 col-md-8" id="signin_intro"><h4>Have an item in good condition that may be worth someone else's money? Add it to TreasureBox.</h4></div>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-md-2"></div>
+    <div class="col-sx-6 col-md-8" id="signin_img_container">
+      <div id="signin_container">
+        <h4>Sign In</h4>
+
+        <%= form_for @user, url: new_user_session_path do |f| %>
+          <div><%= f.label :username %><br />
+          <%= f.text_field :username %></div>
+
+          <div><%= f.label :password %><br />
+          <%= f.password_field :password %></div>
+
+
+          <div><%= f.submit "Sign in" %></div>
+        <% end %>
+
+      </div>
+    </div>
+    <div class="col-xs-6 col-md-2"></div>
+    </div>
+  </div>
+</div>
