@@ -3,7 +3,7 @@
 Treasurebox is Craigslist and Pinterest inspired. It is an app where one's old treasure can become someone else's new 
 treasure. Its a conveinent way for poeple to sell thier stuff to someone locally to avoid any shipping costs. 
 Similar to a garage or moving sale, but without having to worry about the time and/or space for one...
-and on the flip side, an app for those thrifty shoppers nearby.
+and on the flip side, its an app for those thrifty shoppers nearby.
 
 
 Frameworks and Programming Languages:
