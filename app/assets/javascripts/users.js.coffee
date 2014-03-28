@@ -45,6 +45,8 @@ TreasureboxRouter.config(["$routeProvider", "$locationProvider"
       controller: "UserPostsCtrl"
     ).when("/users/new",
       templateUrl: "/users/new_form"
+    ).when("/users/sign_up"
+      templateUrl: "/users/sign_up_form"
     )
 
     $locationProvider.html5Mode(true);
@@ -129,7 +131,6 @@ UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "P
       )
       $scope.userPosts.push(post)
       console.log(post)
-      alert();
       # $scope.posts.push($scope.newPost)
       $scope.newPost = {}
       $scope.selectedCategory = "Categories"

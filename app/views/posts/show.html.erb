@@ -58,7 +58,7 @@
     <!-- Form for image upload -->
     <form class="form-horizontal" id="photoForm" name="photoForm" role="form" ng-submit="addPost($event)" enctype="multipart/form-data" class="direct_upload" action="https://treasurebox-photos.s3.amazonaws.com/" method="post">
       <input type="hidden" name="key" value="uploads/<%= SecureRandom.urlsafe_base64(6) %>_${filename}">
-      <input type="hidden" name="AWSAccessKeyId" value="S3_ACCESS_KEY_ID"> 
+      <input type="hidden" name="AWSAccessKeyId" value="<%=ENV['S3_ACCESS_KEY_ID']%>"> 
       <input type="hidden" name="acl" value="public-read"> 
       <input type="hidden" name="success_action_redirect" value="<%= profile_url(current_user) %>">
       <input type="hidden" name="policy" value="<%=@policy%>">
@@ -69,7 +69,7 @@
         <label for="picture" class="col-sm-2 control-label">Upload a Photo:</label>
         <div class="col-sm-4">
             <input name="file" type="file">
-            <a href="#" class="btn btn-danger btn-sm" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</a>
+           <!--  <a href="#" class="btn btn-danger btn-sm" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</a> -->
         </div> 
       </div>
       <!-- Add Item button -->
@@ -86,8 +86,8 @@
       console.log(event)
     })
     </script>
-  <div ng-repeat="post in userPosts" class="free-wall">
-    <div id="user_posts" class="col-md-3">
+  <div ng-repeat="post in userPosts">
+    <div id="user_posts">
       <span ng-hide="editing">
         <img class="img-responsive" src="{{post.image}}" /><br>
         <label>City:</label> {{post.city}}<br>
@@ -95,7 +95,7 @@
         <label>Category:</label> {{post.category}}<br>
         <label>Description:</label> {{post.description}}<br>
         <label>Price:</label> {{post.price}}<br>
-        <button type="button" class="btn btn-info btn-xs" ng-click="editing = true">Edit Post</button>
+        <button type="button" class="btn btn-info btn-xs" ng-click="editing=true">Edit Post</button>
         <button type="button" class="btn btn-danger btn-xs" ng-click="deletePost()">Delete Post</button>
       </span>
 
@@ -106,14 +106,14 @@
       <div class="form-group">
         <label for="item_name" class="col-sm-2 control-label">City:</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" typeahead="suggestion for suggestion in cities($viewValue)" ng-click"onCityClick('city')" ng-model="newPost.city">
+          <input type="text" class="form-control" typeahead="suggestion for suggestion in cities($viewValue)" ng-click"onCityClick('city')" ng-model="post.city" >
         </div>
       </div>
       <!-- Field for Item Name -->
       <div class="form-group">
         <label for="item_name" class="col-sm-2 control-label">Item name:</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="item_name" ng-model="newPost.name">
+          <input type="text" class="form-control" id="item_name" ng-model="post.name">
         </div>
       </div>
       <!-- Dropdown for Category Selection -->    
@@ -121,7 +121,7 @@
         <label for="item_name" class="col-sm-2 control-label">Select Category:</label>
         <div class="col-sm-6 dropdown btn">
           <div id="selection_dropdown" id="dLabel" role="button" class="col-sm-5 btn btn-default dropdown-toggle btn-select" data-toggle="dropdown" data-target="#">
-            <span ng-model="newPost.category">{{selectedCategory}}</span>
+            <span ng-model="newPost.category">{{post.category}}</span>
             <b class="caret"></b>
           </div>
           <ul class="dropdown-menu" role="menu" id="selected_category" aria-labelledby="dLabel">
@@ -142,21 +142,26 @@
       <div class="form-group">
         <label for="descritpion" class="col-sm-2 control-label">Description:</label>
         <div class="col-sm-4">
-          <textarea class="form-control" rows="3" ng-model="newPost.description"></textarea>
+          <textarea class="form-control" rows="3" ng-model="post.description"></textarea>
         </div>
       </div>
       <!-- Field for Price -->
       <div class="form-group">
         <label for="price" class="col-sm-2 control-label">Price:</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control" id="price" ng-model="newPost.price">
+          <input type="text" class="form-control" id="price" ng-model="post.price" >
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-6 col-sm-offset-2">
+          <input class="btn btn-primary btn-md col-sm-3" type="submit" value="Save" ng-click="editPost()">
         </div>
       </div>
     </form>
     <!-- Form for image upload -->
     <form ng-show="editing" ng-submit="editing=false" class="form-horizontal" id="photoForm" name="photoForm" role="form" ng-submit="addPost($event)" enctype="multipart/form-data" class="direct_upload" action="https://treasurebox-photos.s3.amazonaws.com/" method="post">
       <input type="hidden" name="key" value="uploads/<%= SecureRandom.urlsafe_base64(6) %>_${filename}">
-      <input type="hidden" name="AWSAccessKeyId" value="S3_ACCESS_KEY_ID"> 
+      <input type="hidden" name="AWSAccessKeyId" value="<%=ENV['S3_ACCESS_KEY_ID']%>"> 
       <input type="hidden" name="acl" value="public-read"> 
       <input type="hidden" name="success_action_redirect" value="<%= profile_url(current_user) %>">
       <input type="hidden" name="policy" value="<%=@policy%>">
@@ -167,15 +172,14 @@
         <label for="picture" class="col-sm-2 control-label">Upload a Photo:</label>
         <div class="col-sm-4">
             <input name="file" type="file">
-            <a href="#" class="btn btn-danger btn-sm" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</a>
         </div> 
       </div>
       <!-- Edit Item button -->
-      <div class="form-group">
+<!--       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-2">
           <input class="btn btn-primary btn-md col-sm-3" type="submit" value="Save" ng-click="editPost()">
         </div>
-      </div>
+      </div> -->
       </form>
     </div>
   </div>

@@ -19,5 +19,13 @@ class UsersController < ApplicationController
     render layout: false 
   end
 
+  def sign_up
+  end
+
+  def sign_up_form
+    @user = User.new
+    render layout: false 
+  end
+
 
 end

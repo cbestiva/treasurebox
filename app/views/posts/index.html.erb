@@ -10,14 +10,17 @@
 
   <h1>Treasures near you...</h1>
 
-    <div ng-repeat="post in posts" >
-      <div id="index_posts" class="col-xs-3">
+    <div ng-repeat="post in posts" class="free-wall">
+      <div id="index_posts" class="brick col-sm-3">
         <img class="img-responsive" src="{{post.image}}" /><br>    
         <label>City:</label> {{post.city}}<br>
         <label>Name: </label> {{post.name}}<br>
         <label>Category:</label> {{post.category}}<br>
         <label>Description:</label> {{post.description}}<br>
         <label>Price:</label> {{post.price}}<br>
+        <% if current_user %>
+        <label>Contact: <%= current_user.email %></label>
+        <% end %>
       </div>
     </div>
 
