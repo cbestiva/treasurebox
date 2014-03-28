@@ -13,6 +13,9 @@ class PostsController < ApplicationController
   def show
     # @posts = Post.where(:user_id => current_user.id)
     @posts = current_user.posts
+    @sig = s3_upload_signature
+    @policy = s3_upload_policy_document()
+    puts @sig
 
     respond_to do |f|
       f.html {render layout: false}
@@ -67,20 +70,24 @@ class PostsController < ApplicationController
 
   def s3_upload_policy_document
     return @policy if @policy
-    ret = {"expiration" => "5.minutes.from_now.xmlschema",
+    ret = {"expiration" => 5.hours.from_now.xmlschema,
       "conditions" => [
-        {"bucket" => 'treasurebox-photos'},
-        ["starts-with", "$key", @post],
-        {"acl" => "private"},
-        {"success_action_status" => "200"},
+        {"bucket" => "treasurebox-photos"},
+        ["starts-with", "$key", "uploads/"],
+        {"acl" => "public-read"},
+        {"success_action_redirect" => profile_url(current_user)},
+        # {"success_action_status" => "200"},
+        ["starts-with", "$Content-Type", ""],
         ["content-length-range", 0, 1048576]
       ]
     }
     @policy = Base64.encode64(ret.to_json).gsub(/\n/,'')
   end
 
+
   def s3_upload_signature
-    signature = Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'), +cudz/G7A0JofHYSr3Ma0MqTHvqFBRyKGFsRz8VI, s3_upload_policy_document)).gsub("\n","")
+    signature = Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'), 
+      ENV['S3_SECRET_KEY'], s3_upload_policy_document)).gsub("\n","")
   end
 
 end

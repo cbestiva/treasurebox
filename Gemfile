@@ -11,8 +11,8 @@ gem 'sass-rails', '~> 4.0.2'
 
 gem 'devise'
 # gem 'aws-sdk'
-gem 'rmagick'
-gem 'carrierwave'
+# gem 'rmagick'
+# gem 'carrierwave'
 gem 'json'
 gem 'typhoeus'
 

@@ -1,23 +1,24 @@
+<div class="container">  
   <div class="" ng-controllers="PostsCtrl">
     <form action="" method="post" onsubmit="return false;" role="form">
       <p>
-        Select your city: <input type="text" ng-model="post.city" typeahead="suggestion for suggestion in cities($viewValue)">
+        Select your city: <input type="text" ng-model="post.city" ng-click="onCityClick('city')" typeahead="suggestion for suggestion in cities($viewValue)">
       </p>
     </form>
   </div>
 
 
-  <h1>Home Page</h1>
-  <p>Will display all posts/items here...</p>
+  <h1>Treasures near you...</h1>
 
-
-  <div ng-repeat="post in posts">
-    <div id="index_posts">
-      {{post.image}}
-      <label>City:</label> {{post.city}}<br>
-      <label>Name: </label> {{post.name}}<br>
-      <label>Category:</label> {{post.category}}<br>
-      <label>Description:</label> {{post.description}}<br>
-      <label>Price:</label> {{post.price}}<br>
+    <div ng-repeat="post in posts" >
+      <div id="index_posts" class="col-xs-3">
+        <img class="img-responsive" src="{{post.image}}" /><br>    
+        <label>City:</label> {{post.city}}<br>
+        <label>Name: </label> {{post.name}}<br>
+        <label>Category:</label> {{post.category}}<br>
+        <label>Description:</label> {{post.description}}<br>
+        <label>Price:</label> {{post.price}}<br>
+      </div>
     </div>
-  </div>
+
+</div>

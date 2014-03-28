@@ -1,17 +1,9 @@
 <div class="container">
   <h2>Welcome <%= current_user.username %>!</h2><br>
-
   <h4>Post an item for sale:</h4>
   <div ng-controller="UserPostsCtrl" flow-init>
 
-    <form class="form-horizontal" role="form" ng-submit="addPost()" enctype="multipart/form-data" action="https://treasurebox-photos.s3.amasonaws.com/" method="post">
-      <input type="hidden" name="key" value="uploads/${filename}">
-      <input type="hidden" name="AKIAJJBO6MLEYMSHLGIA" value="+cudz/G7A0JofHYSr3Ma0MqTHvqFBRyKGFsRz8VI"> 
-      <input type="hidden" name="acl" value="private"> 
-      <input type="hidden" name="success_action_redirect" value="http://localhost:3000/users/show/:id">
-      <input type="hidden" name="policy" value="YOUR_POLICY_DOCUMENT_BASE64_ENCODED">
-      <input type="hidden" name="signature" value="YOUR_CALCULATED_SIGNATURE">
-      <input type="hidden" name="Content-Type" value="image/jpeg">
+     <form class="form-horizontal" role="form" ng-init="newPost={}">
       <!-- Field for Item City -->
       <div class="form-group">
         <label for="item_name" class="col-sm-2 control-label">City:</label>
@@ -62,17 +54,22 @@
           <input type="text" class="form-control" id="price" ng-model="newPost.price">
         </div>
       </div>
+    </form>
+    <!-- Form for image upload -->
+    <form class="form-horizontal" id="photoForm" name="photoForm" role="form" ng-submit="addPost($event)" enctype="multipart/form-data" class="direct_upload" action="https://treasurebox-photos.s3.amazonaws.com/" method="post">
+      <input type="hidden" name="key" value="uploads/<%= SecureRandom.urlsafe_base64(6) %>_${filename}">
+      <input type="hidden" name="AWSAccessKeyId" value="S3_ACCESS_KEY_ID"> 
+      <input type="hidden" name="acl" value="public-read"> 
+      <input type="hidden" name="success_action_redirect" value="<%= profile_url(current_user) %>">
+      <input type="hidden" name="policy" value="<%=@policy%>">
+      <input type="hidden" name="signature" value="<%= @sig %>">
+      <input type="hidden" name="Content-Type" value="image/jpeg">
       <!-- Field for Image Upload -->
       <div class="form-group">
-        <div class="col-sm-4 col-sm-offset-2">
-        <div class="thumbnail" ng-hide="$flow.files.length">
-          <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=no+image">
-        </div>
-        <div class="thumbnail" ng-show="$flow.files.length">
-          <img flow-img="$flow.files[0]" />
-        </div>
-          <input type="file" flow-btn ng-hide="$flow.files.length">
-          <a href="#" class="btn btn-danger btn-sm" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</a>
+        <label for="picture" class="col-sm-2 control-label">Upload a Photo:</label>
+        <div class="col-sm-4">
+            <input name="file" type="file">
+            <a href="#" class="btn btn-danger btn-sm" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</a>
         </div> 
       </div>
       <!-- Add Item button -->
@@ -83,10 +80,16 @@
       </div>
     </form>
 
-
-  <div ng-repeat="post in userPosts">
-    <div id="user_posts">
+    <script type="text/javascript">
+    $("#form").submit(function(event){
+     // event.preventDefault();
+      console.log(event)
+    })
+    </script>
+  <div ng-repeat="post in userPosts" class="free-wall">
+    <div id="user_posts" class="col-md-3">
       <span ng-hide="editing">
+        <img class="img-responsive" src="{{post.image}}" /><br>
         <label>City:</label> {{post.city}}<br>
         <label>Name: </label> {{post.name}}<br>
         <label>Category:</label> {{post.category}}<br>
@@ -95,20 +98,22 @@
         <button type="button" class="btn btn-info btn-xs" ng-click="editing = true">Edit Post</button>
         <button type="button" class="btn btn-danger btn-xs" ng-click="deletePost()">Delete Post</button>
       </span>
-      <form ng-show="editing" ng-submit="editing = false" class="form-horizontal" role="form">
+
+      <%= render partial: "posts/form" %>
+      <form ng-show="editing" ng-submit="editing=false" class="form-horizontal" role="form" ng-init="newPost={}">
       <h4>Edit Form:</h4>
         <!-- Field for Item City -->
       <div class="form-group">
         <label for="item_name" class="col-sm-2 control-label">City:</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control ff_elem" id="f_elem_city" name="ff_nm_form[]" ng-click"onCityClick('city')" ng-model="post.city">
+          <input type="text" class="form-control" typeahead="suggestion for suggestion in cities($viewValue)" ng-click"onCityClick('city')" ng-model="newPost.city">
         </div>
       </div>
       <!-- Field for Item Name -->
       <div class="form-group">
         <label for="item_name" class="col-sm-2 control-label">Item name:</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" id="item_name" ng-model="post.name">
+          <input type="text" class="form-control" id="item_name" ng-model="newPost.name">
         </div>
       </div>
       <!-- Dropdown for Category Selection -->    
@@ -116,7 +121,7 @@
         <label for="item_name" class="col-sm-2 control-label">Select Category:</label>
         <div class="col-sm-6 dropdown btn">
           <div id="selection_dropdown" id="dLabel" role="button" class="col-sm-5 btn btn-default dropdown-toggle btn-select" data-toggle="dropdown" data-target="#">
-            <span ng-model="post.category">{{selectedCategory}}</span>
+            <span ng-model="newPost.category">{{selectedCategory}}</span>
             <b class="caret"></b>
           </div>
           <ul class="dropdown-menu" role="menu" id="selected_category" aria-labelledby="dLabel">
@@ -137,22 +142,35 @@
       <div class="form-group">
         <label for="descritpion" class="col-sm-2 control-label">Description:</label>
         <div class="col-sm-4">
-          <textarea class="form-control" rows="3" ng-model="post.description"></textarea>
+          <textarea class="form-control" rows="3" ng-model="newPost.description"></textarea>
         </div>
       </div>
       <!-- Field for Price -->
       <div class="form-group">
         <label for="price" class="col-sm-2 control-label">Price:</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control" id="price" ng-model="post.price">
+          <input type="text" class="form-control" id="price" ng-model="newPost.price">
         </div>
       </div>
-      <!-- Field for Photo Upload -->
+    </form>
+    <!-- Form for image upload -->
+    <form ng-show="editing" ng-submit="editing=false" class="form-horizontal" id="photoForm" name="photoForm" role="form" ng-submit="addPost($event)" enctype="multipart/form-data" class="direct_upload" action="https://treasurebox-photos.s3.amazonaws.com/" method="post">
+      <input type="hidden" name="key" value="uploads/<%= SecureRandom.urlsafe_base64(6) %>_${filename}">
+      <input type="hidden" name="AWSAccessKeyId" value="S3_ACCESS_KEY_ID"> 
+      <input type="hidden" name="acl" value="public-read"> 
+      <input type="hidden" name="success_action_redirect" value="<%= profile_url(current_user) %>">
+      <input type="hidden" name="policy" value="<%=@policy%>">
+      <input type="hidden" name="signature" value="<%= @sig %>">
+      <input type="hidden" name="Content-Type" value="image/jpeg">
+      <!-- Field for Image Upload -->
       <div class="form-group">
-        <!-- <label class="col-sm-2 control-label">Price:</label> -->
-        <input type="file" class="col-md-3 col-md-offset-2 " id="image" ng-model="post.image">
+        <label for="picture" class="col-sm-2 control-label">Upload a Photo:</label>
+        <div class="col-sm-4">
+            <input name="file" type="file">
+            <a href="#" class="btn btn-danger btn-sm" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</a>
+        </div> 
       </div>
-      <!-- Add Item button -->
+      <!-- Edit Item button -->
       <div class="form-group">
         <div class="col-sm-6 col-sm-offset-2">
           <input class="btn btn-primary btn-md col-sm-3" type="submit" value="Save" ng-click="editPost()">

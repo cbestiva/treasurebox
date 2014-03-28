@@ -62,9 +62,9 @@ PostCtrls = angular.module("PostCtrls", [])
 
 # PostCtrls.controller 'TypeaheadCtrl', TypeaheadCtrl
 
-PostCtrls.controller("PostsCtrl", ["$scope", "$http", "limitToFilter"
-  ($scope, $http, limitToFilter) ->
-    
+PostCtrls.controller("PostsCtrl", ["$scope", "$http", "limitToFilter", "$routeParams"
+  ($scope, $http, limitToFilter, $routeParams) ->
+    $scope.params = $routeParams
     $http.get("/posts.json").
       success((data) ->
         console.log(data)
@@ -74,7 +74,9 @@ PostCtrls.controller("PostsCtrl", ["$scope", "$http", "limitToFilter"
     $scope.cities = (cityName) ->
       $http.jsonp("http://gd.geobytes.com/AutoCompleteCity?callback=JSON_CALLBACK &filter=US&q="+cityName).then (response) ->
           limitToFilter response.data, 15
-        
+    
+    $scope.onCityClick = (city) ->
+      # $scope.posts =  
 
 ])
 
@@ -84,6 +86,7 @@ UserPostCtrls = angular.module("UserPostCtrls", [])
 
 UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "Post", "limitToFilter"
   ($scope, $routeParams, $http, Post, limitToFilter) ->
+    $scope.params = $routeParams
     console.log "Loaded UserPostCtrl"
     $scope.userId = $routeParams.id
     $http.get("/users/show/" + $scope.userId + ".json").
@@ -110,14 +113,23 @@ UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "P
       $scope.selectedCategory = category
       $scope.newPost.category = $scope.selectedCategory
 
-    # $scope.posts = [
-    #   {name: "Samsung TV", category: "Electronics", description: "46inch", price: 115.00}
-    #   {name: "Burton Snowboard", category: "Sporting Goods", description: "Women's size 147, rarely used", price: 96.00}
-    # ]
+    $scope.addPost = (event) ->
+      event.preventDefault();
+      console.log($scope.newPost)
 
-    $scope.addPost = () ->
-      post = Post.save($scope.newPost)
+      imageName = $(event.target).find("[type=file]")[0].files[0].name
+      url = $(event.target).find("[name=key]")[0].value
+      imageUrl = url.replace("${filename}", imageName)
+      $scope.newPost.image = "https://treasurebox-photos.s3.amazonaws.com/" + imageUrl
+      console.log($scope.newPost.image)
+
+      post = Post.save($scope.newPost, (data)->
+        $("#photoForm")[0].submit();
+
+      )
       $scope.userPosts.push(post)
+      console.log(post)
+      alert();
       # $scope.posts.push($scope.newPost)
       $scope.newPost = {}
       $scope.selectedCategory = "Categories"
@@ -130,7 +142,6 @@ UserPostCtrls.controller("UserPostsCtrl", ["$scope", "$routeParams", "$http", "P
       Post.delete(@post, ()->
         $scope.userPosts.splice(@index,1)
       )
-
 
 ])
 

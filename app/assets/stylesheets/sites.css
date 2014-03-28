@@ -1,13 +1,25 @@
 /* Styling for site's index page */
 #index_posts {
   border: solid;
-  margin: 20px;
+  margin: 7px;
 }
+
+.size320 {
+  width: 320px;
+  height: 520px;
+}
+
+/*img-responsive {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+*/
 
 /* Styling for user's show page */
 #user_posts {
   border: solid;
-  margin: 20px;
+  margin: 7px;
 }
 
 /* Styling for singin and signup pages */
